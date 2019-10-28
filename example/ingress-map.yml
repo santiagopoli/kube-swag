@@ -1,0 +1,39 @@
+apiVersion: "kubeswag.io/v1beta1"
+kind: IngressMap
+metadata:
+  name: petstore-private
+  namespace: default
+spec:
+  specURL: "http://localhost:8000/example/petstore.yml"
+  host: "api.platform.etermax.com"
+  backend:
+    serviceName: "petstore"
+    servicePort: "http"
+  pathSelector:
+    x-kube-swag-security-policy: private
+  additionalLabels:
+    app: "petstore"
+  additionalAnnotations:
+    ingress.kubernetes.io/auth-type: forward
+    ingress.kubernetes.io/auth-url: http://users-authorization.platform/validate?policy=ingress.global.private
+---
+apiVersion: "kubeswag.io/v1beta1"
+kind: IngressMap
+metadata:
+  name: petstore-public
+  namespace: default
+spec:
+  specURL: "http://localhost:8000/example/petstore.yml"
+  host: "api.platform.etermax.com"
+  backend:
+    serviceName: "petstore"
+    servicePort: "http"
+  pathSelector:
+    x-kube-swag-security-policy: public
+  additionalLabels:
+    app: "petstore"
+  additionalAnnotations:
+    ingress.kubernetes.io/auth-type: forward
+    ingress.kubernetes.io/auth-url: http://users-authorization.platform/validate?policy=ingress.global.public
+
+

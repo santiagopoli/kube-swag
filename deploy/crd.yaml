@@ -1,0 +1,43 @@
+apiVersion: "apiextensions.k8s.io/v1beta1"
+kind: "CustomResourceDefinition"
+metadata:
+  name: "ingressmaps.kubeswag.io"
+spec:
+  group: "kubeswag.io"
+  version: "v1beta1"
+  scope: "Namespaced"
+  names:
+    plural: "ingressmaps"
+    singular: "ingressmap"
+    kind: "IngressMap"
+  validation:
+    openAPIV3Schema:
+      required: ["spec"]
+      properties:
+        spec:
+          required: ["host","backend", "additionalLabels", "additionalAnnotations", "specURL"]
+          properties:
+            specURL:
+              type: "string"
+              minimum: 1  
+            host:
+              type: "string"
+              minimum: 1
+            backend:
+              required: ["serviceName", "servicePort"]
+              properties:
+                serviceName:
+                  type: "string"
+                  minimum: 1  
+                servicePort:
+                  type: "string"
+                  minimum: 1  
+            additionalLabels:
+              type: "object"
+              minimum: 1  
+            additionalAnnotations:
+              type: "object"
+              minimum: 1  
+            pathSelector:
+              type: "object"
+              minimum: 1  
